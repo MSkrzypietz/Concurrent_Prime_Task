@@ -19,6 +19,8 @@ public class Task implements Runnable {
     private Integer minimum;
     private Integer maximum;
     private ArrayList<Integer> primes;
+    private Integer currentPreviousPrimeIndex;
+    private Integer currentNextPrimeIndex;
 
     public Task(CyclicBarrier cyclicBarrier, Integer minimum, Integer maximum) {
         this.cyclicBarrier = cyclicBarrier;
@@ -32,6 +34,14 @@ public class Task implements Runnable {
         primes.add(0, getPreviousPrime(minimum));
         primes.add(getNextPrime(maximum));
         System.out.println(this.toString() + ": Primes initiated");
+    }
+
+    private void initCurrentPreviousPrimeIndex() {
+        this.currentPreviousPrimeIndex = 0;
+    }
+
+    private void initCurrentNextPrimeIndex() {
+        this.currentNextPrimeIndex = primes.size() - 1;
     }
 
     private Integer getPreviousPrime(int minimum) {
@@ -57,26 +67,10 @@ public class Task implements Runnable {
         return true;
     }
 
-    //TODO: replace this method to increase performance
-    //TODO:-> private field currentIndex -> if currentIndex == number then currentIndex++
-    private Integer getPreviousPrimeIndex(int number) {
-        List<Integer> lesserPrimes = primes.stream()
-                .filter(prime -> prime < number)
-                .collect(Collectors.toList());
-        return lesserPrimes.get(lesserPrimes.size() - 1);
-    }
-
-    //TODO: replace this method to increase performance
-    //TODO:-> private field currentIndex -> if currentIndex == number then currentIndex++
-    private Integer getNextPrimeIndex(int number) {
-        List<Integer> greaterPrimes = primes.stream()
-                .filter(prime -> prime > number)
-                .collect(Collectors.toList());
-        return greaterPrimes.get(0);
-    }
-
     private void execute() {
         initPrimesList();
+        initCurrentPreviousPrimeIndex();
+        initCurrentNextPrimeIndex();
         PollardRho pollardRho = new PollardRho();
 
         for (int i = minimum; i <= maximum; i++) {
@@ -90,14 +84,14 @@ public class Task implements Runnable {
             //                  -> false: continue to next number
             //                  -> true: falsified the assumption!
 
-            if (i % 10000 == 0)
-                System.out.println(i);
+            //if (i % 10 == 0)
+            //    System.out.println(i);
             List<BigInteger> factors = pollardRho.factor(BigInteger.valueOf(i));
             BigInteger sumOfFactors = factors.stream().reduce(BigInteger.ZERO, BigInteger::add);
-            int previousPrime = getPreviousPrimeIndex(i);
+            int previousPrime = i > primes.get(currentPreviousPrimeIndex) ? primes.get(currentPreviousPrimeIndex) : primes.get(++currentNextPrimeIndex);
             if (i - sumOfFactors.intValue() != previousPrime)
                 continue;
-            int nextPrime = getNextPrimeIndex(i);
+            int nextPrime = i < primes.get(currentNextPrimeIndex) ?  primes.get(currentNextPrimeIndex) : primes.get(++currentNextPrimeIndex);
             if (i + sumOfFactors.intValue() != nextPrime)
                 continue;
             System.out.println("ASSUMPTION FALSIFIED!!!! " + i + " is smaller with the same properties");
