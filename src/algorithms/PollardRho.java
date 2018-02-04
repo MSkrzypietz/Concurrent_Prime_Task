@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Algorithm source: https://introcs.cs.princeton.edu/java/99crypto/PollardRho.java.html
-    
 
 public class PollardRho {
 
@@ -21,13 +20,12 @@ public class PollardRho {
         factors = new ArrayList<>();
     }
 
-    public BigInteger rho(BigInteger N) {
+    private BigInteger rho(BigInteger N) {
         BigInteger divisor;
         BigInteger c  = new BigInteger(N.bitLength(), random);
         BigInteger x  = new BigInteger(N.bitLength(), random);
         BigInteger xx = x;
 
-        // check divisibility by 2
         if (N.mod(TWO).compareTo(ZERO) == 0) return TWO;
 
         do {
