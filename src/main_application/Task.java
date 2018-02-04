@@ -41,7 +41,12 @@ public class Task implements Runnable {
     }
 
     private void initCurrentNextPrimeIndex() {
-        this.currentNextPrimeIndex = primes.size() - 1;
+        for (int i = 1;; i++) {
+            if (primes.get(i) > minimum) {
+                this.currentNextPrimeIndex = i;
+                break;
+            }
+        }
     }
 
     private Integer getPreviousPrime(int minimum) {
@@ -88,10 +93,14 @@ public class Task implements Runnable {
             //    System.out.println(i);
             List<BigInteger> factors = pollardRho.factor(BigInteger.valueOf(i));
             BigInteger sumOfFactors = factors.stream().reduce(BigInteger.ZERO, BigInteger::add);
-            int previousPrime = i > primes.get(currentPreviousPrimeIndex) ? primes.get(currentPreviousPrimeIndex) : primes.get(++currentNextPrimeIndex);
+            while (i > primes.get(currentPreviousPrimeIndex + 1)) {
+                currentPreviousPrimeIndex++;
+            }
+            int previousPrime = primes.get(currentPreviousPrimeIndex);
             if (i - sumOfFactors.intValue() != previousPrime)
                 continue;
-            int nextPrime = i < primes.get(currentNextPrimeIndex) ?  primes.get(currentNextPrimeIndex) : primes.get(++currentNextPrimeIndex);
+            int nextPrime = i == primes.get(currentPreviousPrimeIndex + 1) ? primes.get(currentPreviousPrimeIndex + 2) : primes.get(currentPreviousPrimeIndex + 1);
+            System.out.println("Number = " + i + "; sumOfFactors = " + sumOfFactors + "; previous prime = " + previousPrime + "; next prime = " + nextPrime);
             if (i + sumOfFactors.intValue() != nextPrime)
                 continue;
             System.out.println("ASSUMPTION FALSIFIED!!!! " + i + " is smaller with the same properties");
