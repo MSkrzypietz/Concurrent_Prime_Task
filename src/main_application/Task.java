@@ -25,16 +25,16 @@ public class Task implements Runnable {
         // add previous prime of minimum and next prime of maximum to check the assumption for minimum and maximum as well
         primes.add(0, getPreviousPrime(minimum));
         primes.add(getNextPrime(maximum));
-        System.out.println(this.toString() + ": Primes initiated");
+        System.out.println(Thread.currentThread().getName() + ": Primes initiated");
     }
 
-    private Integer getPreviousPrime(int minimum) {
+    public int getPreviousPrime(int minimum) {
         for (int i = minimum - 1;; i--)
             if (isPrime(i))
                 return i;
     }
 
-    private Integer getNextPrime(int maximum) {
+    public int getNextPrime(int maximum) {
         for (int i = maximum + 1;; i++)
             if (isPrime(i))
                 return i;
@@ -53,26 +53,32 @@ public class Task implements Runnable {
 
     private void execute() {
         initPrimesList();
-        Factorizer factorizer = new Factorizer();
 
         for (int i = minimum; i <= maximum; i++) {
-            Integer sumOfFactors = factorizer.sumOfPrimeFactors(i);
-            while (i > primes.get(currentPreviousPrimeIndex + 1)) {
-                currentPreviousPrimeIndex++;
+            if (checkAssumption(i)) {
+                System.out.println("======================================================================");
+                System.out.println("ASSUMPTION FALSIFIED!!!! " + i + " is smaller with the same properties");
+                System.out.println("======================================================================");
+                break;
             }
-            int previousPrime = primes.get(currentPreviousPrimeIndex);
-            if (i - sumOfFactors != previousPrime)
-                continue;
-            // index of the next prime is currentPreviousPrimeIndex + 1 unless the current number is a prime then
-            // the next prime is currentPreviousPrimeIndex + 2
-            int nextPrime = i == primes.get(currentPreviousPrimeIndex + 1) ? primes.get(currentPreviousPrimeIndex + 2) : primes.get(currentPreviousPrimeIndex + 1);
-            System.out.println("Number = " + i + "; sumOfFactors = " + sumOfFactors + "; previous prime = " + previousPrime + "; next prime = " + nextPrime);
-            if (i + sumOfFactors != nextPrime)
-                continue;
-            System.out.println("ASSUMPTION FALSIFIED!!!! " + i + " is smaller with the same properties");
-            System.out.println("Sum of the prime factors of i =" + sumOfFactors);
-            break;
         }
+    }
+
+    public boolean checkAssumption(int number) {
+        Factorizer factorizer = new Factorizer();
+        Integer sumOfFactors = factorizer.sumOfPrimeFactors(number);
+
+        while (number > primes.get(currentPreviousPrimeIndex + 1))
+            currentPreviousPrimeIndex++;
+        int previousPrime = primes.get(currentPreviousPrimeIndex);
+        if (number - sumOfFactors != previousPrime)
+            return false;
+
+        // index of the next prime is currentPreviousPrimeIndex + 1 unless the current number is a prime then
+        // the next prime is currentPreviousPrimeIndex + 2
+        int nextPrime = number == primes.get(currentPreviousPrimeIndex + 1) ? primes.get(currentPreviousPrimeIndex + 2) : primes.get(currentPreviousPrimeIndex + 1);
+        System.out.println("Number = " + number + "; sumOfFactors = " + sumOfFactors + "; previous prime = " + previousPrime + "; next prime = " + nextPrime);
+        return number + sumOfFactors == nextPrime;
     }
 
     public void run() {
