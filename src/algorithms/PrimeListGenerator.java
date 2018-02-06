@@ -1,13 +1,11 @@
 package algorithms;
 
 // Source: https://medium.com/@agilanbtdw/prime-number-generation-in-java-using-segmented-sieve-of-eratosthenes-187af1dcd051
-// found all primes between 369757002 and 493009335 in 26 sec -> that would be the range with 4 processors
 
 import java.util.ArrayList;
 
 public class PrimeListGenerator {
     private int array[];
-    private int primes[];
 
     public PrimeListGenerator() {}
 
@@ -17,7 +15,7 @@ public class PrimeListGenerator {
         int j = 0;
         int sqt = (int) Math.sqrt(m);
         array = new int[sqt + 1];
-        primes = new int[sqt + 1];
+        int[] primes = new int[sqt + 1];
 
         initialise(sqt + 1);
         for (int i = 2; i <= sqt; i++) {

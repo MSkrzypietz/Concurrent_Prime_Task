@@ -1,11 +1,9 @@
 package main_application;
 
 import Configuration.Configuration;
-import algorithms.PrimeListGenerator;
 import base.Partition;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
 public class Application {
@@ -42,15 +40,13 @@ public class Application {
         }
     }
 
-    private ArrayList<Task> build() {
+    private void build() {
         ArrayList<Partition> partitions = initPartitions();
         tasks = new ArrayList<>();
         final CyclicBarrier cyclicBarrier = new CyclicBarrier(Configuration.instance.numberOfProcessors);
 
         for (Partition partition : partitions)
             tasks.add(new Task(cyclicBarrier, partition.getMinimumIndex(), partition.getMaximumIndex()));
-
-        return tasks;
     }
 
     private ArrayList<Partition> initPartitions() {
