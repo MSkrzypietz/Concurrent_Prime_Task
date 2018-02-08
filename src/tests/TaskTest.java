@@ -4,8 +4,6 @@ import main_application.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.CyclicBarrier;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,7 +14,7 @@ class TaskTest {
 
     @BeforeEach
     void init() {
-        task = new Task(new CyclicBarrier(1), 493000000, 493009335);
+        task = new Task(493000000, 493009335);
         task.run();
     }
 

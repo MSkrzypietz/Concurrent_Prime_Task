@@ -4,7 +4,7 @@ public enum Configuration {
     instance;
 
     public final int numberOfProcessors = Runtime.getRuntime().availableProcessors();
-    public final int maximum = 100000000;//493009335;
+    public final int maximum = 493009335;
     public int sizeOfPartition = maximum / numberOfProcessors;
 
 }

@@ -4,18 +4,16 @@ import algorithms.Factorizer;
 import algorithms.PrimeListGenerator;
 
 import java.util.ArrayList;
-import java.util.concurrent.CyclicBarrier;
 
 public class Task implements Runnable {
 
-    private CyclicBarrier cyclicBarrier;
+    //private CyclicBarrier cyclicBarrier;
     private Integer minimum;
     private Integer maximum;
     private ArrayList<Integer> primes;
     private Integer currentPreviousPrimeIndex = 0;
 
-    public Task(CyclicBarrier cyclicBarrier, Integer minimum, Integer maximum) {
-        this.cyclicBarrier = cyclicBarrier;
+    public Task(Integer minimum, Integer maximum) {
         this.minimum = minimum;
         this.maximum = maximum;
     }
@@ -25,7 +23,7 @@ public class Task implements Runnable {
         // add previous prime of minimum and next prime of maximum to check the assumption for minimum and maximum as well
         primes.add(0, getPreviousPrime(minimum));
         primes.add(getNextPrime(maximum));
-        System.out.println(Thread.currentThread().getName() + ": Primes initiated");
+        System.out.println(Thread.currentThread().getName() + ": primes initiated");
     }
 
     public int getPreviousPrime(int minimum) {
@@ -57,7 +55,7 @@ public class Task implements Runnable {
         for (int i = minimum; i <= maximum; i++) {
             if (checkAssumption(i)) {
                 System.out.println("======================================================================");
-                System.out.println("ASSUMPTION FALSIFIED!!!! " + i + " is smaller with the same properties");
+                System.out.println("FOUND THE FIRST NUMBER WITH THE DESIRED PROPERTIES!!!! Number: " + i);
                 System.out.println("======================================================================");
                 break;
             }
@@ -77,17 +75,12 @@ public class Task implements Runnable {
         // index of the next prime is currentPreviousPrimeIndex + 1 unless the current number is a prime then
         // the next prime is currentPreviousPrimeIndex + 2
         int nextPrime = number == primes.get(currentPreviousPrimeIndex + 1) ? primes.get(currentPreviousPrimeIndex + 2) : primes.get(currentPreviousPrimeIndex + 1);
-        System.out.println("Number = " + number + "; sumOfFactors = " + sumOfFactors + "; previous prime = " + previousPrime + "; next prime = " + nextPrime);
+        System.out.println(Thread.currentThread().getName() + ": currentNumber = " + number + "; sumOfFactors = " + sumOfFactors + "; previousPrime = " + previousPrime + "; nextPrime = " + nextPrime);
         return number + sumOfFactors == nextPrime;
     }
 
     public void run() {
         execute();
-        try {
-            cyclicBarrier.await();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

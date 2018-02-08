@@ -4,7 +4,6 @@ import Configuration.Configuration;
 import base.Partition;
 
 import java.util.ArrayList;
-import java.util.concurrent.CyclicBarrier;
 
 public class Application {
 
@@ -43,10 +42,9 @@ public class Application {
     private void build() {
         ArrayList<Partition> partitions = initPartitions();
         tasks = new ArrayList<>();
-        final CyclicBarrier cyclicBarrier = new CyclicBarrier(Configuration.instance.numberOfProcessors);
 
         for (Partition partition : partitions)
-            tasks.add(new Task(cyclicBarrier, partition.getMinimumIndex(), partition.getMaximumIndex()));
+            tasks.add(new Task(partition.getMinimumIndex(), partition.getMaximumIndex()));
     }
 
     private ArrayList<Partition> initPartitions() {
