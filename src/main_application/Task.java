@@ -7,11 +7,10 @@ import java.util.ArrayList;
 
 public class Task implements Runnable {
 
-    //private CyclicBarrier cyclicBarrier;
-    private Integer minimum;
-    private Integer maximum;
+    private int minimum;
+    private int maximum;
     private ArrayList<Integer> primes;
-    private Integer currentPreviousPrimeIndex = 0;
+    private int currentPreviousPrimeIndex = 0;
 
     public Task(Integer minimum, Integer maximum) {
         this.minimum = minimum;
