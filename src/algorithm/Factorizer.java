@@ -1,8 +1,6 @@
-package algorithms;
+package algorithm;
 
 public class Factorizer {
-
-    public Factorizer() {}
 
     public int sumOfPrimeFactors(int n) {
         int sum = 0;

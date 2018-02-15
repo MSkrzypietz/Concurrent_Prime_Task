@@ -1,13 +1,12 @@
-package algorithms;
+package algorithm;
 
 // Source: https://medium.com/@agilanbtdw/prime-number-generation-in-java-using-segmented-sieve-of-eratosthenes-187af1dcd051
 
 import java.util.ArrayList;
 
 public class PrimeListGenerator {
-    private int array[];
 
-    public PrimeListGenerator() {}
+    private int array[];
 
     public ArrayList<Integer> calculate(int n, int m) {
         ArrayList<Integer> primesList = new ArrayList<>();

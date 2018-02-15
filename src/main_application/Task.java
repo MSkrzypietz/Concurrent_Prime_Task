@@ -1,7 +1,7 @@
 package main_application;
 
-import algorithms.Factorizer;
-import algorithms.PrimeListGenerator;
+import algorithm.Factorizer;
+import algorithm.PrimeListGenerator;
 
 import java.util.ArrayList;
 

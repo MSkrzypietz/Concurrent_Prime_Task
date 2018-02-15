@@ -1,6 +1,6 @@
 package tests;
 
-import algorithms.PrimeListGenerator;
+import algorithm.PrimeListGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
